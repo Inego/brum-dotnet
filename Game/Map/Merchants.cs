@@ -10,14 +10,14 @@
         }
     }
 
-    class FreeDevelopReward : MerchantReward
+    public class FreeDevelopReward : MerchantReward
     {
         public FreeDevelopReward() : base("Free develop")
         {
         }
     }
 
-    class VictoryPointsReward : MerchantReward
+    public class VictoryPointsReward : MerchantReward
     {
         public int Vp { get; }
 
@@ -27,7 +27,7 @@
         }
     }
 
-    class MoneyReward : MerchantReward
+    public class MoneyReward : MerchantReward
     {
         public int Amount { get; }
 
@@ -37,7 +37,7 @@
         }
     }
 
-    class IncomeReward : MerchantReward
+    public class IncomeReward : MerchantReward
     {
         public int Amount { get; }
 

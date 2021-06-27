@@ -5,7 +5,7 @@
         public IndustrySlot Slot => this;
         public int Count => 1;
 
-        public DoubleIndustrySlot Double() => new DoubleIndustrySlot(this);
+        public DoubleIndustrySlot Double() => new (this);
     }
 
     public class DoubleIndustrySlot : IIndustryCount
@@ -38,7 +38,6 @@
         }
     }
 
-
     public abstract class Location
     {
         protected Location(string name)
@@ -48,13 +47,25 @@
 
         public string Name { get; }
 
-        public abstract bool ProvidesCoal();
+        public abstract bool IsMerchant();
+    }
+
+    public class Buildable : Location
+    {
+        public IIndustryCount[] Slots { get; }
+        
+        public Buildable(string name, params IIndustryCount[] slots) : base(name)
+        {
+            Slots = slots;
+        }
+        
+        public sealed override bool IsMerchant() => false;
     }
 
     /**
      * Any place with build slots (incl. beer breweries without corresponding cards).
      */
-    public class Town : Location, ICardStats
+    public class Town : Buildable, ICardStats
     {
         /**
          * Count of this card in the 2-player deck.
@@ -71,25 +82,29 @@
          */
         public int C4 { get; }
 
-        public IIndustryCount[] Slots { get; }
-
-        public Town(string name, int c2, int c3, int c4, params IIndustryCount[] slots) : base(name)
+        public Town(string name, int c2, int c3, int c4, params IIndustryCount[] slots) : base(name, slots)
         {
             C2 = c2;
             C3 = c3;
             C4 = c4;
-            Slots = slots;
         }
-
-        public override bool ProvidesCoal() => false;
     }
 
     public class Merchant : Location
     {
-        public Merchant(string name) : base(name)
+        public int SincePlayerCount { get; }
+        
+        public int SlotCount { get; }
+        
+        public MerchantReward Reward { get; }
+
+        public Merchant(string name, int sincePlayerCount, int slotCount, MerchantReward reward) : base(name)
         {
+            SincePlayerCount = sincePlayerCount;
+            SlotCount = slotCount;
+            Reward = reward;
         }
 
-        public override bool ProvidesCoal() => true;
+        public override bool IsMerchant() => true;
     }
 }

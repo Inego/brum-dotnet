@@ -8,6 +8,7 @@ namespace Inego.Birmingham.Game.Tests
         [SetUp]
         public void Setup()
         {
+            
         }
 
         [Test]
